@@ -19,6 +19,9 @@ ADD https://get.docker.io/builds/Linux/x86_64/docker-0.9.1 /usr/local/bin/docker
 ADD ./wrapdocker /usr/local/bin/wrapdocker
 RUN chmod +x /usr/local/bin/docker /usr/local/bin/wrapdocker
 RUN docker -v | cat > .version
+
+# expose the port
+EXPOSE 8080
 # required to make docker in docker to work
 VOLUME /var/lib/docker
 
