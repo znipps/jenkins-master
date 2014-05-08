@@ -15,7 +15,7 @@ RUN apt-get install -y jenkins
 RUN echo deb http://archive.ubuntu.com/ubuntu precise universe > /etc/apt/sources.list.d/universe.list
 RUN apt-get update -qq
 RUN apt-get install -qqy iptables ca-certificates lxc
-ADD https://get.docker.io/builds/Linux/x86_64/docker-0.10.1 /usr/local/bin/docker
+ADD https://get.docker.io/builds/Linux/x86_64/docker-0.9.1 /usr/local/bin/docker
 ADD ./wrapdocker /usr/local/bin/wrapdocker
 RUN chmod +x /usr/local/bin/docker /usr/local/bin/wrapdocker
 RUN docker -v | cat > .version
