@@ -2,7 +2,6 @@ FROM ubuntu:14.04
 MAINTAINER Alex Sanz <asans@evirtualpost.com>
 
 # First, let us install Jenkins - as per https://github.com/cloudbees/jenkins-docker
-RUN docker -v | cat > .version
 RUN apt-get update
 RUN echo deb http://pkg.jenkins-ci.org/debian binary/ >> /etc/apt/sources.list
 RUN apt-get install -y wget
@@ -19,6 +18,7 @@ RUN apt-get install -qqy iptables ca-certificates lxc
 ADD /usr/local/bin/docker /usr/local/bin/docker
 ADD ./wrapdocker /usr/local/bin/wrapdocker
 RUN chmod +x /usr/local/bin/docker /usr/local/bin/wrapdocker
+RUN docker -v | cat > .version
 # required to make docker in docker to work
 VOLUME /var/lib/docker
 
