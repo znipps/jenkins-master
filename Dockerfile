@@ -4,7 +4,7 @@ MAINTAINER Alex Sanz <asans@evirtualpost.com>
 # First, let us install Jenkins - as per https://github.com/cloudbees/jenkins-docker
 RUN apt-get update
 RUN echo deb http://pkg.jenkins-ci.org/debian binary/ >> /etc/apt/sources.list
-RUN apt-get install -y wget
+RUN apt-get install -y wget curl git
 RUN wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
 RUN apt-get update
 # installs the newest jenkins version
