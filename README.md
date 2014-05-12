@@ -20,7 +20,15 @@ Also, you can create (data containers)[http://docs.docker.io/use/working_with_vo
     docker run --name JENKINS_DATA -v /home/jenkins busybox true
     docker run --privileged -d -e JENKINS_HOME=/home/jenkins --volumes-from JENKINS_DATA -p 8080:8080 --name jenkins-1 virtualpost/jenkins-docker-executors
 
-This will allow you to persist your jenkins data across container restarts.  In addition, you will also be able to attach the data container to make backups separately from the jenkins contains
+This will allow you to persist your jenkins data across container restarts.  In addition, you will also be able to attach the data container to make backups separately from the jenkins container.
+
+#### Removing Container Data Volumes
+
+This docker container requires mounting ```/var/lib/docker``` as a volume inside the container itself in order to run docker within docker.  The issue is that when you exit the docker container and remove the container, the data volume continues to exist.  This may take up an abnormal amount of space since you would assume that the data volume was cleared out after the container is stopped and removed. 
+
+To properly remove the data volume created by the container, we would need to issue the command ```docker rm -v```.  The -v flag will properly remove volumes created by the container.
+
+#### Building/Running Docker Images Inside Jenkins Docker Container
 
 If you wish to use docker in a build - you can. You can just use the `docker` command from a freestyle build, it will work just like expect it would. Don't do anything crazy like try to run this thing itself inside docker, as then you end up in an inception like world and ultimate in limbo. http://inception.davepedu.com/ ;)
 
