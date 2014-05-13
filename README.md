@@ -15,12 +15,18 @@ You can see your docker conatiner running with:
 
 If you with to use a volume outside to store your workspace, you can with bind mounting and setting the JENKINS_HOME directory. 
 
-Also, you can create (data containers)[http://docs.docker.io/use/working_with_volumes/] to store jenkins data, which should correspond to the JENKINS_HOME.  An example of using data containers would be something like:
+Also, you can create (data containers)[http://docs.docker.io/use/working_with_volumes/] to store jenkins data, which should correspond to the JENKINS_HOME.  This image by default sets JENKINS_HOME to ```/var/jenkins```.  It can be overridden via the command line.
 
-    docker run --name JENKINS_DATA -v /home/jenkins busybox true
-    docker run --privileged -d -e JENKINS_HOME=/home/jenkins --volumes-from JENKINS_DATA -p 8080:8080 --name jenkins-1 virtualpost/jenkins-docker-executors
+An example of using data containers would be something like:
+
+    docker run --name JENKINS_DATA -v /var/jenkins busybox true
+    docker run --privileged -d -e JENKINS_HOME=/var/jenkins --volumes-from JENKINS_DATA -p 8080:8080 --name jenkins-1 virtualpost/jenkins-docker-executors
 
 This will allow you to persist your jenkins data across container restarts.  In addition, you will also be able to attach the data container to make backups separately from the jenkins container.
+
+#### Jenkins User 
+
+Jenkins runs as root user within the container.  By default, the root user home directory is set to /, but this has been overridden to be set to the same as JENKINS_HOME, which is ```/var/jenkins```.  This allows us to actually inject our own SSH keys, dockercfg file, and other OS-level config and authentication settings directly within the jenkins data volume so we can customize it separately should we need to.
 
 #### Removing Container Data Volumes
 
