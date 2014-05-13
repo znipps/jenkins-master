@@ -17,7 +17,6 @@ RUN apt-get update -qq
 RUN apt-get install -qqy iptables ca-certificates lxc
 ADD https://get.docker.io/builds/Linux/x86_64/docker-0.9.1 /usr/local/bin/docker
 ADD wrapdocker /usr/local/bin/wrapdocker
-ADD dockercfg /.dockercfg
 RUN chmod +x /usr/local/bin/docker /usr/local/bin/wrapdocker
 RUN docker -v | cat > .version
 
@@ -25,5 +24,10 @@ RUN docker -v | cat > .version
 EXPOSE 8080
 # required to make docker in docker to work
 VOLUME /var/lib/docker
+
+# default jenkins home directory
+ENV JENKINS_HOME=/var/jenkins
+# set our user home to the same location
+ENV HOME=/var/jenkins
 
 CMD wrapdocker && java -jar /usr/share/jenkins/jenkins.war
