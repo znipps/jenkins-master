@@ -26,8 +26,8 @@ EXPOSE 8080
 VOLUME /var/lib/docker
 
 # default jenkins home directory
-ENV JENKINS_HOME=/var/jenkins
+ENV JENKINS_HOME /var/jenkins
 # set our user home to the same location
-ENV HOME=/var/jenkins
+ENV HOME /var/jenkins
 
 CMD wrapdocker && java -jar /usr/share/jenkins/jenkins.war
