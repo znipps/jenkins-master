@@ -34,6 +34,8 @@ This docker container requires mounting ```/var/lib/docker``` as a volume inside
 
 To properly remove the data volume created by the container, we would need to issue the command ```docker rm -v```.  The -v flag will properly remove volumes created by the container.
 
+Alternatively, set the ```DOCKER_HOST``` environment to an external docker server that runs outside of the container, ie. the host system.  By using and accessing the host system, we remove the need to use a data volume for storing internal docker host.  This actually speeds up the creation of docker images by over 50% since we're not using vfs but the host system's storage engine.
+
 #### Building/Running Docker Images Inside Jenkins Docker Container
 
 If you wish to use docker in a build - you can. You can just use the `docker` command from a freestyle build, it will work just like expect it would. Don't do anything crazy like try to run this thing itself inside docker, as then you end up in an inception like world and ultimate in limbo. http://inception.davepedu.com/ ;)
