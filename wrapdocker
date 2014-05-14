@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$DOCKER_HOST" ]; then
+	echo "DOCKER_HOST set... bypassing setup of docker daemon in container."
+	exit 0
+fi
+
 # First, make sure that cgroups are mounted correctly.
 CGROUP=/sys/fs/cgroup
 
