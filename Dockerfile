@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:trusty
 MAINTAINER Alex Sanz <asans@evirtualpost.com>
 
 # First, let us install Jenkins - as per https://github.com/cloudbees/jenkins-docker
