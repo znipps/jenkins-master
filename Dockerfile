@@ -26,7 +26,8 @@ RUN chmod +x /usr/local/bin/docker
 
 # for installing docker related files first
 RUN echo deb http://archive.ubuntu.com/ubuntu precise universe > /etc/apt/sources.list.d/universe.list
-RUN apt-get update -qq && apt-get install -qqy wget git iptables ca-certificates
+# apparmor is required to run docker server within docker container
+RUN apt-get update -qq && apt-get install -qqy wget git iptables ca-certificates apparmor
 
 # for jenkins
 RUN echo deb http://pkg.jenkins-ci.org/debian binary/ >> /etc/apt/sources.list \

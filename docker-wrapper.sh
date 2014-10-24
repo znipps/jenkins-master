@@ -1,9 +1,13 @@
 #!/bin/bash
 
-if [ "$DOCKER_HOST" ]; then
-	echo "DOCKER_HOST set... bypassing setup of docker daemon in container."
-	exit 0
+# If we have docker bind mounted in - no need.
+if (docker version); then
+	echo "Docker is already bind mounted in - we are good to go..."
+    exec "$@"
+    exit
 fi
+
+echo "Launching docker server DND style..."
 
 # First, make sure that cgroups are mounted correctly.
 CGROUP=/sys/fs/cgroup
@@ -13,7 +17,7 @@ CGROUP=/sys/fs/cgroup
 
 mountpoint -q $CGROUP || 
 	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP || {
-		echo "Could not make a tmpfs mount. Did you use -privileged?"
+		echo "Could not make a tmpfs mount. Did you use --privileged?"
 		exit 1
 	}
 
@@ -87,13 +91,5 @@ popd >/dev/null
 # delete it so that docker can start.
 rm -rf /var/run/docker.pid
 
-# If we were given a PORT environment variable, start as a simple daemon;
-# otherwise, spawn a shell as well
-if [ "$PORT" ]
-then
-	exec docker -d -H 0.0.0.0:$PORT
-else
-
-	docker -d &
-	exec bash
-fi
+docker -d &
+exec "$@"
