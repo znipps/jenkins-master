@@ -50,6 +50,8 @@ There are tradeoffs to running docker within docker.
 3. Additionally, please be aware that when you exit the docker container and remove the container, the data volume continues to exist.  This may take up an abnormal amount of space since you would assume that the data volume was cleared out after the container is stopped and removed. 
     To properly remove the data volume created by the container, we would need to issue the command ```docker rm -v```.  The -v flag will properly remove volumes created by the container.
 
+4. Over time, you may experience issues where DND cannot launch docker server inside docker due to an error where there are no more loopback devices available.  This is caused by issues where docker server was not given time to shutdown properly before the container was stopped, which then does not release some mount points.  A restart of the host server is required in this case.
+
 ## Building/Running Docker Images Inside Jenkins Docker Container
 
 If you wish to use docker in a build - you can. You can just use the `docker` command from a freestyle build, it will work just like you expected. Don't do anything crazy like try to run this thing itself inside docker, as then you end up in an inception like world and ultimate in limbo. http://inception.davepedu.com/ ;)
