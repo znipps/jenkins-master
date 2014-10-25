@@ -24,12 +24,12 @@ By default, the container will launch a docker server inside the container if it
 
 If you wish to use a volume outside to store your workspace, you can by using bind mounting and setting the JENKINS_HOME directory. 
 
-Also, you can create (data containers)[http://docs.docker.io/use/working_with_volumes/] to store jenkins data, which should correspond to the JENKINS_HOME.  This image by default sets JENKINS_HOME to ```/var/jenkins```.  It can be overridden via the command line.
+Also, you can create (data containers)[http://docs.docker.io/use/working_with_volumes/] to store jenkins data, which should correspond to the JENKINS_HOME.  This image by default sets JENKINS_HOME to ```/var/jenkins```.  It can be overridden via the docker environment setting.
 
 An example of using data containers would be something like:
 
     docker run --name JENKINS_DATA -v /var/jenkins busybox true
-    docker run -d -e JENKINS_HOME=/var/jenkins --volumes-from JENKINS_DATA -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
+    docker run -d -v /var/run/docker.sock:/var/run/docker.sock --volumes-from JENKINS_DATA -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
 
 This will allow you to persist your jenkins data across container restarts.  In addition, you will also be able to attach the data container to make backups separately from the jenkins container.
 
