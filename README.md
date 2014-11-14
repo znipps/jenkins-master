@@ -38,9 +38,8 @@ __NOTE__
 If you make use of the host's docker server to do all the work, it is recommended that you create a jenkins user in the host system and create a jenkins data directory in the host system to bind mount into jenkins docker container.  This will make running docker easier as you do not need to bind mount JENKINS_DATA data volume for every docker launch in order to access the workspace and other information.  Here's an example:
 
 ```
-adduser --system --group jenkins
-mkdir ~jenkins/jenkins-data
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -u jenkins -v /home/jenkins/jenkins-data:/var/jenkins -v /tmp:/tmp -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
+mkdir /var/jenkins
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -v /var/jenkins:/var/jenkins -v /tmp:/tmp -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
 ```
 
 You will notice that we not only mount `jenkins-data`, we also bind mounted `/tmp`.  This is because some of the jenkins plugins create temp files (ie. Credential Bindings Plugin) for use by build scripts.  Therefore, to simplify the use of host docker system, we also bind mount `/tmp` into the jenkins container.
