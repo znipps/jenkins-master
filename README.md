@@ -35,14 +35,12 @@ This will allow you to persist your jenkins data across container restarts.  In 
 
 __NOTE__
 
-If you make use of the host's docker server to do all the work, it is recommended that you create a jenkins user in the host system and create a jenkins data directory in the host system to bind mount into jenkins docker container.  This will make running docker easier as you do not need to bind mount JENKINS_DATA data volume for every docker launch in order to access the workspace and other information.  Here's an example:
+If you make use of the host's docker server to do all the work, it is recommended that you create the jenkins data directory in the host system to bind mount into jenkins docker container.  This will make running docker easier as you do not need to bind mount JENKINS_DATA data volume for every docker launch in order to access the workspace and other information.  Here's an example:
 
 ```
 mkdir /var/jenkins
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -v /var/jenkins:/var/jenkins -v /tmp:/tmp -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -v /var/jenkins:/var/jenkins -p 8080:8080 --name jenkins-1 onesysadmin/jenkins-docker-executors
 ```
-
-You will notice that we not only mount `jenkins-data`, we also bind mounted `/tmp`.  This is because some of the jenkins plugins create temp files (ie. Credential Bindings Plugin) for use by build scripts.  Therefore, to simplify the use of host docker system, we also bind mount `/tmp` into the jenkins container.
 
 ## Jenkins User 
 
@@ -62,6 +60,7 @@ There are tradeoffs to running docker within docker.
     To properly remove the data volume created by the container, we would need to issue the command ```docker rm -v```.  The -v flag will properly remove volumes created by the container.
 
 4. Over time, you may experience issues where DND cannot launch docker server inside docker due to an error where there are no more loopback devices available.  This is caused by issues where docker server was not given time to shutdown properly before the container was stopped, which then does not release some mount points.  A restart of the host server is required in this case.
+5. Certain plugins write out temp files into `/tmp` directory.  This directory is not accessible in other docker containers since this exists inside only the jenkins container.  It is suggested, if possible, to set the target location when generating these files so that they exist inside the workspace.
 
 ## Building/Running Docker Images Inside Jenkins Docker Container
 
