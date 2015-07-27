@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-MAINTAINER Alex Sanz <asans@evirtualpost.com>
+MAINTAINER Bilal Sheikh <bilal@techtraits.com>
 
 # expose the port
 EXPOSE 8080
